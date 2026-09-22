@@ -47,7 +47,7 @@ Designed to replace confusing, single-status order displays with an intuitive, t
 ### 5. Suspense & Error Boundaries
 
 - **Suspense Loading**: State transitions simulate realistic network latency (`wait(350)`) wrapped in React `<Suspense>`, displaying an animated shimmer skeleton (`OrderSkeleton`).
-- **Local Error Boundary**: Uses `react-error-boundary` within the component tree, providing an in-place recovery card with "Retry Request" and "Reset to Healthy" options.
+- **Local Error Boundary**: Uses `react-error-boundary` within the component tree, providing an in-place recovery card with "Retry Request" option.
 - **Route Fallbacks**: Standalone `app/loading.tsx` and `app/error.tsx` for route-level resilience.
 
 ---

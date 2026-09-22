@@ -1,9 +1,9 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { AlertCircle, RefreshCw } from "lucide-react";
 import * as React from "react";
 import { ErrorBoundary, FallbackProps } from "react-error-boundary";
-import { AlertCircle, RefreshCw, HeadphonesIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
 export function ErrorFallbackCard({
   message,
@@ -41,21 +41,6 @@ export function ErrorFallbackCard({
           <RefreshCw className="size-3.5" />
           Retry Request
         </Button>
-        <Button
-          variant="secondary"
-          size="sm"
-          className="w-full gap-2 text-xs font-medium"
-          onClick={() => {
-            if (typeof window !== "undefined") {
-              const url = new URL(window.location.href);
-              url.searchParams.set("state", "processing");
-              window.location.href = url.toString();
-            }
-          }}
-        >
-          <HeadphonesIcon className="size-3.5" />
-          Reset to Healthy
-        </Button>
       </div>
     </div>
   );
@@ -83,10 +68,7 @@ export function OrderErrorBoundary({
   resetKey?: string;
 }) {
   return (
-    <ErrorBoundary
-      FallbackComponent={ErrorFallback}
-      resetKeys={[resetKey]}
-    >
+    <ErrorBoundary FallbackComponent={ErrorFallback} resetKeys={[resetKey]}>
       {children}
     </ErrorBoundary>
   );
