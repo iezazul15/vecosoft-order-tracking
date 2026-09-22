@@ -1,9 +1,8 @@
 "use client";
 
-import * as React from "react";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogHeader,
@@ -11,19 +10,19 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { Textarea } from "@/components/ui/textarea";
+import type { OrderStatusKey } from "@/lib/mock-data";
+import { cn } from "@/lib/utils";
 import {
-  MessageSquare,
-  PhoneCall,
   CheckCircle2,
   FileQuestion,
-  Send,
   Loader2,
+  MessageSquare,
+  PhoneCall,
+  Send,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
-import type { OrderStatusKey } from "@/lib/mock-data";
+import * as React from "react";
 
 interface SupportSheetProps {
   orderId: string;
@@ -42,7 +41,10 @@ export function SupportDialog({
 }: SupportSheetProps) {
   const [open, setOpen] = React.useState(false);
   const [selectedIssue, setSelectedIssue] = React.useState<string>(() => {
-    if (presetAction === "missing_package" || status === "delivered_not_received") {
+    if (
+      presetAction === "missing_package" ||
+      status === "delivered_not_received"
+    ) {
       return "not_received";
     }
     if (presetAction === "delayed" || status === "delayed") {
@@ -53,6 +55,7 @@ export function SupportDialog({
   const [message, setMessage] = React.useState("");
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [isSubmitted, setIsSubmitted] = React.useState(false);
+  const [ticketId, setTicketId] = React.useState<string | null>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -60,6 +63,7 @@ export function SupportDialog({
     setTimeout(() => {
       setIsSubmitting(false);
       setIsSubmitted(true);
+      setTicketId(`TK-${Math.floor(1000 + Math.random() * 9000)}`);
     }, 600);
   };
 
@@ -68,6 +72,7 @@ export function SupportDialog({
     setTimeout(() => {
       setIsSubmitted(false);
       setMessage("");
+      setTicketId(null);
     }, 300);
   };
 
@@ -129,11 +134,11 @@ export function SupportDialog({
             </div>
             <div className="space-y-1">
               <h4 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
-                Ticket #TK-{Math.floor(1000 + Math.random() * 9000)} Created
+                Ticket #{ticketId || "TK-Pending"} Created
               </h4>
               <p className="text-xs text-neutral-500 max-w-[260px] mx-auto leading-relaxed">
-                Our delivery resolution team has received your report. We will reach
-                out via SMS and email within 15 minutes.
+                Our delivery resolution team has received your report. We will
+                reach out via SMS and email within 15 minutes.
               </p>
             </div>
             <div className="pt-2">
@@ -163,10 +168,14 @@ export function SupportDialog({
                       "flex items-center gap-2.5 p-2 rounded-lg border text-xs cursor-pointer transition-all",
                       selectedIssue === opt.id
                         ? "border-neutral-900 bg-neutral-50/80 text-neutral-900 dark:border-white dark:bg-neutral-900 dark:text-white font-medium shadow-2xs"
-                        : "border-neutral-200 dark:border-neutral-800 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-50 dark:hover:bg-neutral-900"
+                        : "border-neutral-200 dark:border-neutral-800 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-50 dark:hover:bg-neutral-900",
                     )}
                   >
-                    <RadioGroupItem value={opt.id} id={opt.id} className="size-3.5" />
+                    <RadioGroupItem
+                      value={opt.id}
+                      id={opt.id}
+                      className="size-3.5"
+                    />
                     <span className="truncate leading-tight">{opt.label}</span>
                   </label>
                 ))}
@@ -216,7 +225,9 @@ export function SupportDialog({
                   <PhoneCall className="size-3" />
                   Urgent? Call 1-800-555-0199
                 </span>
-                <span className="text-[10px] text-neutral-400">24/7 Available</span>
+                <span className="text-[10px] text-neutral-400">
+                  24/7 Available
+                </span>
               </div>
             </div>
           </form>
