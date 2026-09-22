@@ -9,14 +9,16 @@ Designed to replace confusing, single-status order displays with an intuitive, t
 ## Key Features
 
 ### 1. Interactive 14-State Evaluator Simulator
+
 - A sticky simulator bar located at the top of the screen allows instant switching across all **14 mock states** without reloading the page or requiring a live backend.
 - Grouped with visual color coding:
-  - 🟢 **Standard Delivery Flow (4 States)**: Healthy progression through *Processing*, *Shipped*, *Out for Delivery*, and *Delivered*.
-  - 🟡 **Required Edge Scenarios (3 States)**: Context-aware resolution screens for *Delayed Order*, *Delivered but Not Received*, and *Tracking Not Available Yet*.
+  - 🟢 **Standard Delivery Flow (4 States)**: Healthy progression through _Processing_, _Shipped_, _Out for Delivery_, and _Delivered_.
+  - 🟡 **Required Edge Scenarios (3 States)**: Context-aware resolution screens for _Delayed Order_, _Delivered but Not Received_, and _Tracking Not Available Yet_.
   - 🔴 **Simulated Error States (7 States)**: Dedicated failure variants for every base state to evaluate the custom error boundary and retry mechanisms.
 - State is synced via URL search parameters (`?state=<id>`), making specific scenarios directly linkable and bookmarkable.
 
 ### 2. The Three Required Edge Scenarios
+
 1. **Delayed Order (`delayed`)**:
    - Immediate visual alert with an amber notice banner.
    - Original estimated delivery time is crossed out in red and flagged as overdue.
@@ -30,17 +32,20 @@ Designed to replace confusing, single-status order displays with an intuitive, t
    - Reassures the customer that the order is being packed at the fulfillment center and tracking scans typically appear within 24 hours.
 
 ### 3. Vertical Delivery Timeline
+
 - Clear typographic hierarchy with generous spacing and breathing room.
 - Emerald green circular checkpoints with checkmarks for completed milestones.
 - Pulsing animated badge for the active milestone with real-time description.
 - Subtle muted checkpoints for upcoming steps.
 
 ### 4. Meaningful Interactions & Support Dialog
+
 - **Support & Issue Resolution Modal**: Accessible dialog that pre-selects relevant dispute categories (missing parcel, delivery inquiry, address change) and generates a support ticket confirmation.
 - **Quick Order Reference Copy**: One-tap copy to clipboard for order numbers.
 - **Order & Price Breakdown**: Itemized listing with item quantities, unit prices, free shipping badge, and order totals.
 
 ### 5. Suspense & Error Boundaries
+
 - **Suspense Loading**: State transitions simulate realistic network latency (`wait(350)`) wrapped in React `<Suspense>`, displaying an animated shimmer skeleton (`OrderSkeleton`).
 - **Local Error Boundary**: Uses `react-error-boundary` within the component tree, providing an in-place recovery card with "Retry Request" and "Reset to Healthy" options.
 - **Route Fallbacks**: Standalone `app/loading.tsx` and `app/error.tsx` for route-level resilience.
@@ -87,42 +92,47 @@ Designed to replace confusing, single-status order displays with an intuitive, t
 
 ## State Reference Table
 
-| State ID | Group | Description |
-| :--- | :--- | :--- |
-| `processing` | 🟢 Healthy | Order verified and packed; ETA Sep 24 |
-| `shipped` | 🟢 Healthy | In transit with carrier sorting center; ETA Sep 23 |
-| `out_for_delivery` | 🟢 Healthy | Out with driver; ETA today by 6:00 PM |
-| `delivered` | 🟢 Healthy | Successfully delivered at 1:47 PM |
-| `delayed` | 🟡 Edge | Overdue ETA; amber delay banner & support action |
-| `delivered_not_received` | 🟡 Edge | Marked delivered; missing package report flow |
-| `tracking_not_available` | 🟡 Edge | No carrier scans yet; reassuring fulfillment card |
-| `*_error` (7 states) | 🔴 Error | Simulated carrier API 500 failure caught by Error Boundary |
+| State ID                 | Group      | Description                                                |
+| :----------------------- | :--------- | :--------------------------------------------------------- |
+| `processing`             | 🟢 Healthy | Order verified and packed; ETA Sep 24                      |
+| `shipped`                | 🟢 Healthy | In transit with carrier sorting center; ETA Sep 23         |
+| `out_for_delivery`       | 🟢 Healthy | Out with driver; ETA today by 6:00 PM                      |
+| `delivered`              | 🟢 Healthy | Successfully delivered at 1:47 PM                          |
+| `delayed`                | 🟡 Edge    | Overdue ETA; amber delay banner & support action           |
+| `delivered_not_received` | 🟡 Edge    | Marked delivered; missing package report flow              |
+| `tracking_not_available` | 🟡 Edge    | No carrier scans yet; reassuring fulfillment card          |
+| `*_error` (7 states)     | 🔴 Error   | Simulated carrier API 500 failure caught by Error Boundary |
 
 ---
 
 ## Getting Started
 
 ### Prerequisites
+
 - **Node.js**: v18.18.0 or newer
 - **pnpm**: v9 or newer (recommended)
 
 ### Installation
+
 ```bash
 # Clone repository
 git clone <repository-url>
-cd order-tracking
+cd vecosoft-order-tracking
 
 # Install dependencies
 pnpm install
 ```
 
 ### Running Locally
+
 ```bash
 pnpm dev
 ```
+
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ### Type Checking & Building
+
 ```bash
 # Type check with TypeScript
 pnpm tsc --noEmit
