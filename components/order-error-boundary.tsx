@@ -1,9 +1,10 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { AlertCircle, RefreshCw } from "lucide-react";
 import * as React from "react";
 import { ErrorBoundary, FallbackProps } from "react-error-boundary";
+import { AlertCircle, RefreshCw } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 export function ErrorFallbackCard({
   message,
@@ -13,36 +14,38 @@ export function ErrorFallbackCard({
   onRetry?: () => void;
 }) {
   return (
-    <div className="flex flex-col items-center justify-center p-6 text-center bg-white dark:bg-neutral-900 rounded-2xl border border-neutral-200 dark:border-neutral-800 shadow-xs my-4 space-y-4 animate-in fade-in-50 duration-200">
-      <div className="size-12 rounded-full bg-rose-50 text-rose-600 dark:bg-rose-950/40 dark:text-rose-400 flex items-center justify-center">
-        <AlertCircle className="size-6 stroke-[2.2]" />
-      </div>
+    <Card className="rounded-2xl border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-xs my-4 p-6 animate-in fade-in-50 duration-200">
+      <CardContent className="p-0 flex flex-col items-center justify-center text-center space-y-4">
+        <div className="size-12 rounded-full bg-rose-50 text-rose-600 dark:bg-rose-950/40 dark:text-rose-400 flex items-center justify-center">
+          <AlertCircle className="size-6 stroke-[2.2]" />
+        </div>
 
-      <div className="space-y-1.5">
-        <h3 className="text-base font-semibold text-neutral-900 dark:text-neutral-100 tracking-tight">
-          Unable to Load Tracking Details
-        </h3>
-        <p className="text-xs text-neutral-500 max-w-xs leading-relaxed">
-          {message ||
-            "We hit an unexpected snag fetching the latest courier status. Please try again or reach out to customer support."}
-        </p>
-      </div>
+        <div className="space-y-1.5">
+          <h3 className="text-base font-semibold text-neutral-900 dark:text-neutral-100 tracking-tight">
+            Unable to Load Tracking Details
+          </h3>
+          <p className="text-xs text-neutral-500 max-w-xs leading-relaxed">
+            {message ||
+              "We hit an unexpected snag fetching the latest courier status. Please try again or reach out to customer support."}
+          </p>
+        </div>
 
-      <div className="flex flex-col sm:flex-row items-center gap-2 pt-2 w-full max-w-xs">
-        <Button
-          variant="outline"
-          size="sm"
-          className="w-full gap-2 text-xs font-medium"
-          onClick={() => {
-            if (onRetry) onRetry();
-            else if (typeof window !== "undefined") window.location.reload();
-          }}
-        >
-          <RefreshCw className="size-3.5" />
-          Retry Request
-        </Button>
-      </div>
-    </div>
+        <div className="flex flex-col sm:flex-row items-center gap-2 pt-2 w-full max-w-xs">
+          <Button
+            variant="outline"
+            size="sm"
+            className="w-full gap-2 text-xs font-medium"
+            onClick={() => {
+              if (onRetry) onRetry();
+              else if (typeof window !== "undefined") window.location.reload();
+            }}
+          >
+            <RefreshCw className="size-3.5" />
+            Retry Request
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
   );
 }
 

@@ -2,8 +2,17 @@
 
 import * as React from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Select } from "radix-ui";
-import { Check, ChevronDown, SlidersHorizontal } from "lucide-react";
+import { SlidersHorizontal } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectSeparator,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { MOCK_STATES, type MockState, type StateTag } from "@/lib/mock-data";
 import { cn } from "@/lib/utils";
 
@@ -59,14 +68,12 @@ export function StateSelector({ currentStateId }: { currentStateId: string }) {
         </div>
       </div>
 
-      <Select.Root value={currentState.id} onValueChange={handleSelect}>
-        <Select.Trigger
+      <Select value={currentState.id} onValueChange={handleSelect}>
+        <SelectTrigger
           aria-label="Select Mock State"
+          size="sm"
           className={cn(
-            "inline-flex items-center justify-between gap-2 h-8 px-3 rounded-lg text-xs font-medium border transition-all cursor-pointer select-none",
-            "bg-white dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100",
-            "border-neutral-200 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700",
-            "focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-neutral-600",
+            "h-8 px-3 text-xs font-medium bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 rounded-lg hover:border-neutral-300 dark:hover:border-neutral-700 transition-colors shadow-2xs",
             isPending && "opacity-60 cursor-wait"
           )}
         >
@@ -77,84 +84,65 @@ export function StateSelector({ currentStateId }: { currentStateId: string }) {
                 tagColors[currentState.tag].dot
               )}
             />
-            <Select.Value />
+            <SelectValue>{currentState.label}</SelectValue>
           </div>
-          <Select.Icon>
-            <ChevronDown className="size-3.5 text-neutral-400" />
-          </Select.Icon>
-        </Select.Trigger>
+        </SelectTrigger>
 
-        <Select.Portal>
-          <Select.Content
-            position="popper"
-            sideOffset={6}
-            className="z-50 w-72 max-h-80 overflow-y-auto rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white/95 dark:bg-neutral-950/95 p-1.5 shadow-xl backdrop-blur-md animate-in fade-in-80 zoom-in-95"
-          >
-            <Select.Viewport className="p-0.5 space-y-2">
-              {/* Healthy Standard States */}
-              <Select.Group>
-                <Select.Label className="px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-neutral-400 dark:text-neutral-500">
-                  Standard Delivery Flow
-                </Select.Label>
-                {healthyStates.map((s) => (
-                  <SelectItemOption key={s.id} state={s} />
-                ))}
-              </Select.Group>
+        <SelectContent className="w-72 max-h-80 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white/95 dark:bg-neutral-950/95 shadow-xl backdrop-blur-md">
+          {/* Healthy Standard States */}
+          <SelectGroup>
+            <SelectLabel className="px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-neutral-400 dark:text-neutral-500">
+              Standard Delivery Flow
+            </SelectLabel>
+            {healthyStates.map((s) => (
+              <SelectItemOption key={s.id} state={s} />
+            ))}
+          </SelectGroup>
 
-              <Select.Separator className="h-px bg-neutral-100 dark:bg-neutral-800 my-1" />
+          <SelectSeparator className="my-1 bg-neutral-100 dark:bg-neutral-800" />
 
-              {/* Edge Scenarios (Delayed, Not Received, No Tracking) */}
-              <Select.Group>
-                <Select.Label className="px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-amber-600/90 dark:text-amber-400/90">
-                  Required Edge Scenarios
-                </Select.Label>
-                {edgeStates.map((s) => (
-                  <SelectItemOption key={s.id} state={s} />
-                ))}
-              </Select.Group>
+          {/* Edge Scenarios (Delayed, Not Received, No Tracking) */}
+          <SelectGroup>
+            <SelectLabel className="px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-amber-600/90 dark:text-amber-400/90">
+              Required Edge Scenarios
+            </SelectLabel>
+            {edgeStates.map((s) => (
+              <SelectItemOption key={s.id} state={s} />
+            ))}
+          </SelectGroup>
 
-              <Select.Separator className="h-px bg-neutral-100 dark:bg-neutral-800 my-1" />
+          <SelectSeparator className="my-1 bg-neutral-100 dark:bg-neutral-800" />
 
-              {/* Simulated Error Variants */}
-              <Select.Group>
-                <Select.Label className="px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-rose-600/90 dark:text-rose-400/90">
-                  Simulated Error States (7)
-                </Select.Label>
-                {errorStates.map((s) => (
-                  <SelectItemOption key={s.id} state={s} />
-                ))}
-              </Select.Group>
-            </Select.Viewport>
-          </Select.Content>
-        </Select.Portal>
-      </Select.Root>
+          {/* Simulated Error Variants */}
+          <SelectGroup>
+            <SelectLabel className="px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-rose-600/90 dark:text-rose-400/90">
+              Simulated Error States (7)
+            </SelectLabel>
+            {errorStates.map((s) => (
+              <SelectItemOption key={s.id} state={s} />
+            ))}
+          </SelectGroup>
+        </SelectContent>
+      </Select>
     </div>
   );
 }
 
 function SelectItemOption({ state }: { state: MockState }) {
   return (
-    <Select.Item
+    <SelectItem
       value={state.id}
-      className={cn(
-        "relative flex w-full cursor-pointer items-center justify-between rounded-lg py-1.5 px-2.5 text-xs text-neutral-800 dark:text-neutral-200 outline-hidden select-none transition-colors",
-        "data-highlighted:bg-neutral-100 dark:data-highlighted:bg-neutral-900 data-highlighted:text-neutral-900 dark:data-highlighted:text-white"
-      )}
+      className="text-xs text-neutral-800 dark:text-neutral-200 rounded-lg cursor-pointer py-1.5 px-2.5"
     >
-      <div className="flex items-center gap-2 min-w-0 pr-2">
+      <div className="flex items-center gap-2 min-w-0">
         <span
           className={cn(
             "size-2 rounded-full shrink-0 shadow-xs",
             tagColors[state.tag].dot
           )}
         />
-        <Select.ItemText className="truncate font-medium">
-          {state.label}
-        </Select.ItemText>
+        <span className="truncate font-medium">{state.label}</span>
       </div>
-      <Select.ItemIndicator>
-        <Check className="size-3.5 text-neutral-900 dark:text-neutral-100 shrink-0" />
-      </Select.ItemIndicator>
-    </Select.Item>
+    </SelectItem>
   );
 }

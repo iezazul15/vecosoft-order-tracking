@@ -1,15 +1,14 @@
 "use client";
 
 import * as React from "react";
-import type { OrderData } from "@/lib/mock-data";
+import { ArrowLeft, LifeBuoy, Shield } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { OrderStatusBanner } from "@/components/order-status-banner";
 import { OrderTimeline } from "@/components/order-timeline";
 import { OrderSummary } from "@/components/order-summary";
 import { SupportDialog } from "@/components/support-sheet";
-import { ArrowLeft, Share2, Shield, LifeBuoy } from "lucide-react";
-import { Button } from "@/components/ui/button";
-
 import { ErrorFallbackCard } from "@/components/order-error-boundary";
+import type { OrderData } from "@/lib/mock-data";
 
 interface OrderViewProps {
   order: OrderData | null;
@@ -18,19 +17,8 @@ interface OrderViewProps {
 }
 
 export function OrderView({ order, isError, stateLabel }: OrderViewProps) {
-  const [mounted, setMounted] = React.useState(false);
-
-  React.useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  // If simulated error state
+  // If simulated error state, render error fallback card directly without unnecessary useEffect
   if (isError || !order) {
-    if (mounted) {
-      throw new Error(
-        `Courier API service unavailable for state "${stateLabel}". Simulated carrier dispatch error.`
-      );
-    }
     return (
       <ErrorFallbackCard
         message={`Courier API service unavailable for state "${stateLabel}". Simulated carrier dispatch error.`}
@@ -45,18 +33,21 @@ export function OrderView({ order, isError, stateLabel }: OrderViewProps) {
       {/* Mobile Screen Header */}
       <header className="flex items-center justify-between py-1.5 px-0.5">
         <div className="flex items-center gap-2">
-          <button
-            type="button"
-            className="size-8 rounded-full border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 flex items-center justify-center text-neutral-600 dark:text-neutral-300 hover:bg-neutral-50 shadow-2xs"
+          <Button
+            variant="outline"
+            size="icon-sm"
+            className="size-8 rounded-full border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-2xs"
             aria-label="Back to orders"
           >
             <ArrowLeft className="size-4" />
-          </button>
+          </Button>
           <div>
             <h1 className="text-sm font-bold text-neutral-900 dark:text-neutral-100 tracking-tight">
               Order #{order.orderId}
             </h1>
-            <p className="text-[10px] text-neutral-400 font-medium">Placed on Sep 19, 2026</p>
+            <p className="text-[10px] text-neutral-400 font-medium">
+              Placed on Sep 19, 2026
+            </p>
           </div>
         </div>
 
@@ -65,13 +56,14 @@ export function OrderView({ order, isError, stateLabel }: OrderViewProps) {
             orderId={order.orderId}
             status={order.status}
             trigger={
-              <button
-                type="button"
-                className="size-8 rounded-full border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 flex items-center justify-center text-neutral-600 dark:text-neutral-300 hover:bg-neutral-50 shadow-2xs"
+              <Button
+                variant="outline"
+                size="icon-sm"
+                className="size-8 rounded-full border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-2xs"
                 aria-label="Get Help"
               >
                 <LifeBuoy className="size-4" />
-              </button>
+              </Button>
             }
           />
         </div>
